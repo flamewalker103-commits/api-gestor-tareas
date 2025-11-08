@@ -32,8 +32,13 @@ app.put('/tareas/:id', (req, res) => {
 
 app.delete('/tareas/:id', (req, res) => {
   const { id } = req.params;
-  tareas = tareas.filter(t => t.id !== id);
-  res.status(204).send();
+  const tareaIndex = tareas.findIndex(t => t.id === id);
+  if (tareaIndex !== -1) {
+    tareas.splice(tareaIndex, 1);
+    res.status(204).send();
+  } else {
+    res.status(404).send({ error: 'Tarea no encontrada' });
+  }
 });
 
 app.listen(port, () => {
